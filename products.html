@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products Catalog - ShopSphere</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <nav class="navbar">
+    <a href="index.html" class="logo">🛍️ ShopSphere</a>
+    <button class="hamburger" id="hamburger-btn">☰</button>
+    <div class="nav-links" id="nav-links">
+      <a href="index.html">Home</a>
+      <a href="products.html" class="active">Products</a>
+      <a href="wishlist.html" class="nav-icon-link">❤️ Wishlist <span class="nav-badge" id="wishlist-badge">0</span></a>
+      <a href="cart.html" class="nav-icon-link">🛒 Cart <span class="nav-badge" id="cart-badge">0</span></a>
+    </div>
+  </nav>
+
+  <div class="section">
+    <h1 id="page-title">All Products</h1>
+    <br>
+
+    <div class="filters">
+      <input type="text" id="search-input" placeholder="🔍 Search products...">
+
+      <select id="category-select">
+        <option value="All">All Categories</option>
+      </select>
+
+      <select id="sort-select">
+        <option value="default">Sort By</option>
+        <option value="low">Price: Low to High</option>
+        <option value="high">Price: High to Low</option>
+        <option value="rating">Highest Rated</option>
+      </select>
+
+      <div style="display:flex; flex-direction:column; justify-content:center">
+        <label style="font-size:12px; font-weight:700">Max Price: <span id="price-val">₹2,00,000</span></label>
+        <input type="range" id="price-range" min="100" max="2500" value="2500">
+      </div>
+    </div>
+
+    <div class="product-grid" id="products-catalog-grid">
+      <p>Loading products...</p>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    let allProducts = productsData;
+    const urlParams = new URLSearchParams(window.location.search);
+    const categoryParam = urlParams.get('category');
+    const saleParam = urlParams.get('sale');
+
+    function initCatalog() {
+      const categories = ['All', ...new Set(allProducts.map(p => p.category))];
+      const categorySelect = document.getElementById('category-select');
+      categorySelect.innerHTML = categories.map(c => `<option value="${c}">${c === 'All' ? 'All Categories' : c.toUpperCase()}</option>`).join('');
+
+      if (categoryParam) categorySelect.value = categoryParam;
+
+      if (saleParam === 'true') {
+        document.getElementById('page-title').textContent = '🔥 Clearance Sale Items (Special Discounts)';
+      }
+
+      renderProducts();
+    }
+
+    function renderProducts() {
+      const search = document.getElementById('search-input').value.toLowerCase();
+      const category = document.getElementById('category-select').value;
+      const sort = document.getElementById('sort-select').value;
+      const maxPrice = Number(document.getElementById('price-range').value) * 100;
+
+      document.getElementById('price-val').textContent = '₹' + maxPrice.toLocaleString('en-IN');
+
+      let filtered = allProducts.filter(p => {
+        const matchesSearch = p.title.toLowerCase().includes(search);
+        const matchesCategory = category === 'All' || p.category.toLowerCase() === category.toLowerCase();
+        const matchesPrice = p.price <= maxPrice;
+        const matchesSale = saleParam === 'true' ? (p.discountPercentage && p.discountPercentage > 0) : true;
+        return matchesSearch && matchesCategory && matchesPrice && matchesSale;
+      });
+
+      if (sort === 'low') filtered.sort((a, b) => a.price - b.price);
+      if (sort === 'high') filtered.sort((a, b) => b.price - a.price);
+      if (sort === 'rating') filtered.sort((a, b) => b.rating - a.rating);
+
+      const grid = document.getElementById('products-catalog-grid');
+      if (filtered.length === 0) {
+        grid.innerHTML = '<div style="grid-column: span 4; text-align:center; padding: 50px;"><h3>No products found</h3></div>';
+        return;
+      }
+
+      grid.innerHTML = filtered.map(p => `
+        <div class="product-card">
+          <div class="product-image-container">
+            ${p.discountPercentage ? `<span class="discount-badge">-${p.discountPercentage}%</span>` : ''}
+            <img src="${p.thumbnail}" alt="${p.title}" />
+            <button class="wishlist-btn ${isInWishlist(p.id) ? 'active' : ''}" onclick="toggleWishlist({id:'${p.id}', title:'${p.title.replace(/'/g, "")}', price:${p.price}, thumbnail:'${p.thumbnail}', category:'${p.category}'}); this.classList.toggle('active');">♥</button>
+          </div>
+          <div class="product-info">
+            <p class="product-category">${p.category}</p>
+            <h3>${p.title}</h3>
+            <p style="color:#64748b; font-size:13px">⭐ ${p.rating}</p>
+            <div class="product-bottom">
+              <div>
+                <span class="price-tag">₹${p.price.toLocaleString('en-IN')}</span>
+              </div>
+              <div>
+                <button class="cart-btn-icon" onclick="addToCart({id:'${p.id}', title:'${p.title.replace(/'/g, "")}', price:${p.price}, thumbnail:'${p.thumbnail}'})">🛒</button>
+                <a href="product-details.html?id=${p.id}"><button class="view-btn">View</button></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    document.getElementById('search-input').addEventListener('input', renderProducts);
+    document.getElementById('category-select').addEventListener('change', renderProducts);
+    document.getElementById('sort-select').addEventListener('change', renderProducts);
+    document.getElementById('price-range').addEventListener('input', renderProducts);
+
+    initCatalog();
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShopSphere - Modern E-Commerce</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="index.html" class="logo">🛍️ ShopSphere</a>
+    <button class="hamburger" id="hamburger-btn">☰</button>
+    <div class="nav-links" id="nav-links">
+      <a href="index.html" class="active">Home</a>
+      <a href="products.html">Products</a>
+      <a href="wishlist.html" class="nav-icon-link">❤️ Wishlist <span class="nav-badge" id="wishlist-badge">0</span></a>
+      <a href="cart.html" class="nav-icon-link">🛒 Cart <span class="nav-badge" id="cart-badge">0</span></a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div>
+      <h1>Discover Your Style</h1>
+      <p>Shop the latest trends at unbeatable prices. Free shipping across India on orders over ₹3,999.</p>
+      <a href="products.html"><button class="btn-primary">Shop Now →</button></a>
+    </div>
+  </section>
+
+  <section class="trust-section">
+    <div class="trust-badge"><span>🚚</span><h4>Free Shipping</h4><p>On orders over ₹3,999</p></div>
+    <div class="trust-badge"><span>🔄</span><h4>Easy Returns</h4><p>7-day replacement policy</p></div>
+    <div class="trust-badge"><span>🔒</span><h4>Secure Payment</h4><p>100% encrypted checkout</p></div>
+    <div class="trust-badge"><span>💬</span><h4>24/7 Support</h4><p>Friendly customer support</p></div>
+  </section>
+
+  <section class="section">
+    <div class="section-header">
+      <h2>Shop by Category</h2>
+      <a href="products.html" style="color: #2563eb; font-weight: 700;">View All →</a>
+    </div>
+    <div class="categories">
+      <a href="products.html?category=makeup"><div>💄 Makeup</div></a>
+      <a href="products.html?category=beauty"><div>✨ Beauty & Care</div></a>
+      <a href="products.html?category=smartphones"><div>📱 Smartphones</div></a>
+      <a href="products.html?category=laptops"><div>💻 Laptops</div></a>
+      <a href="products.html?category=electronics"><div>🎧 Electronics</div></a>
+      <a href="products.html?category=shoes"><div>👟 Footwear</div></a>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header">
+      <h2>Featured Products</h2>
+    </div>
+    <div class="product-grid" id="featured-grid">
+      <p>Loading products...</p>
+    </div>
+  </section>
+
+  <div class="promo-banner">
+    <h2>🎉 Mega Clearance Sale!</h2>
+    <p style="margin: 10px 0 20px;">Get up to 50% OFF on Electronics, Makeup, and Accessories.</p>
+    <a href="products.html?sale=true"><button class="btn-primary" style="background:#2563eb">Shop Sale Items →</button></a>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <div><h3>🛍️ ShopSphere</h3><p>Your one-stop shop for quality products.</p></div>
+      <div><h4>Quick Links</h4><p><a href="index.html">Home</a></p><p><a href="products.html">Products</a></p><p><a href="cart.html">Cart</a></p></div>
+      <div><h4>Customer Care</h4><p>Shipping Policy</p><p>Returns</p></div>
+      <div><h4>Contact</h4><p>📧 support@shopsphere.com</p></div>
+    </div>
+    <div class="footer-bottom"><p>© 2026 ShopSphere. All rights reserved.</p></div>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>
+    function renderHomeFeed(products) {
+      const grid = document.getElementById('featured-grid');
+      grid.innerHTML = products.map(p => `
+        <div class="product-card">
+          <div class="product-image-container">
+            ${p.discountPercentage ? `<span class="discount-badge">-${p.discountPercentage}%</span>` : ''}
+            <img src="${p.thumbnail}" alt="${p.title}" />
+            <button class="wishlist-btn ${isInWishlist(p.id) ? 'active' : ''}" onclick="toggleWishlist({id:'${p.id}', title:'${p.title.replace(/'/g, "")}', price:${p.price}, thumbnail:'${p.thumbnail}', category:'${p.category}'}); this.classList.toggle('active');">♥</button>
+          </div>
+          <div class="product-info">
+            <p class="product-category">${p.category}</p>
+            <h3>${p.title}</h3>
+            <p style="color:#64748b; font-size:13px">⭐ ${p.rating}</p>
+            <div class="product-bottom">
+              <span class="price-tag">₹${p.price.toLocaleString('en-IN')}</span>
+              <div>
+                <button class="cart-btn-icon" onclick="addToCart({id:'${p.id}', title:'${p.title.replace(/'/g, "")}', price:${p.price}, thumbnail:'${p.thumbnail}'})">🛒</button>
+                <a href="product-details.html?id=${p.id}"><button class="view-btn">View</button></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    renderHomeFeed(productsData);
+  </script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout - ShopSphere</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <nav class="navbar">
+    <a href="index.html" class="logo">🛍️ ShopSphere</a>
+  </nav>
+
+  <div class="section">
+    <h1>Checkout & Delivery</h1>
+    <br>
+    <form onsubmit="handleCheckout(event)"
+      style="max-width:600px; background:white; padding:30px; border-radius:16px; border:1px solid #e2e8f0;">
+      <h3>Shipping Address</h3>
+      <br>
+      <input type="text" placeholder="Full Name *" required
+        style="width:100%; padding:12px; margin-bottom:12px; border:1px solid #cbd5e1; border-radius:8px">
+      <input type="email" placeholder="Email Address *" required
+        style="width:100%; padding:12px; margin-bottom:12px; border:1px solid #cbd5e1; border-radius:8px">
+      <input type="text" placeholder="Mobile Number *" required
+        style="width:100%; padding:12px; margin-bottom:12px; border:1px solid #cbd5e1; border-radius:8px">
+      <input type="text" placeholder="PIN Code *" required
+        style="width:100%; padding:12px; margin-bottom:12px; border:1px solid #cbd5e1; border-radius:8px">
+      <input type="text" placeholder="Delivery Address *" required
+        style="width:100%; padding:12px; margin-bottom:12px; border:1px solid #cbd5e1; border-radius:8px">
+      <br><br>
+      <h3>Payment Method</h3>
+      <p
+        style="padding:12px; background:#eff6ff; border:1px solid #2563eb; color:#2563eb; border-radius:8px; font-weight:700; margin-top:10px">
+        💵 Cash on Delivery / UPI Pay on Delivery</p>
+      <br>
+      <button type="submit" class="btn-primary" style="width:100%">Place Order</button>
+    </form>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    function handleCheckout(e) {
+      e.preventDefault();
+      cart = [];
+      saveCart();
+      window.location.href = 'order-success.html';
+    }
+  </script>
+</body>
+
+</html>

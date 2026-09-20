@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wishlist - ShopSphere</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="index.html" class="logo">🛍️ ShopSphere</a>
+    <button class="hamburger" id="hamburger-btn">☰</button>
+    <div class="nav-links" id="nav-links">
+      <a href="index.html">Home</a>
+      <a href="products.html">Products</a>
+      <a href="wishlist.html" class="active nav-icon-link">❤️ Wishlist <span class="nav-badge" id="wishlist-badge">0</span></a>
+      <a href="cart.html" class="nav-icon-link">🛒 Cart <span class="nav-badge" id="cart-badge">0</span></a>
+    </div>
+  </nav>
+
+  <div class="section">
+    <h1>My Wishlist</h1>
+    <br>
+    <div class="product-grid" id="wishlist-grid"></div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    function renderWishlist() {
+      const grid = document.getElementById('wishlist-grid');
+      if (wishlist.length === 0) {
+        grid.parentNode.innerHTML = `
+          <div style="text-align:center; padding:60px">
+            <h1 style="font-size:64px">❤️</h1>
+            <h2>Your wishlist is empty</h2>
+            <br>
+            <a href="products.html"><button class="btn-primary">Browse Catalog</button></a>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = wishlist.map(p => `
+        <div class="product-card">
+          <div class="product-image-container">
+            <img src="${p.thumbnail}" alt="${p.title}" />
+            <button class="wishlist-btn active" onclick="toggleWishlist({id:${p.id}}); renderWishlist();">♥</button>
+          </div>
+          <div class="product-info">
+            <p class="product-category">${p.category}</p>
+            <h3>${p.title}</h3>
+            <div class="product-bottom">
+              <span class="price-tag">${formatINR(p.price)}</span>
+              <button class="view-btn" onclick="addToCart({id:${p.id}, title:'${p.title.replace(/'/g, "")}', price:${p.price}, thumbnail:'${p.thumbnail}'}); toggleWishlist({id:${p.id}}); renderWishlist();">Move to Cart</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+    renderWishlist();
+  </script>
+</body>
+</html>

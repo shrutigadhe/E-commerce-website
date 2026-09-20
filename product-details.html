@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Details - ShopSphere</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="index.html" class="logo">🛍️ ShopSphere</a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="products.html">Products</a>
+      <a href="wishlist.html" class="nav-icon-link">❤️ Wishlist <span class="nav-badge" id="wishlist-badge">0</span></a>
+      <a href="cart.html" class="nav-icon-link">🛒 Cart <span class="nav-badge" id="cart-badge">0</span></a>
+    </div>
+  </nav>
+
+  <!-- Product Details Section -->
+  <div class="section" id="detail-container">
+    <p>Loading product details...</p>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get('id');
+
+    const matchedLocal = productsData.find(p => String(p.id) === String(productId));
+
+    if (matchedLocal) {
+      renderDetailsPage({
+        id: matchedLocal.id,
+        title: matchedLocal.title,
+        category: matchedLocal.category,
+        rating: matchedLocal.rating,
+        priceINR: '₹' + matchedLocal.price.toLocaleString('en-IN'),
+        rawPrice: matchedLocal.price,
+        discount: matchedLocal.discountPercentage,
+        description: matchedLocal.description,
+        photos: [matchedLocal.thumbnail],
+        thumbnail: matchedLocal.thumbnail
+      });
+    } else {
+      renderError();
+    }
+
+    function renderDetailsPage(p) {
+      const container = document.getElementById('detail-container');
+      container.innerHTML = `
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:40px">
+          <div>
+            <div style="background:#fff; border:1px solid #e2e8f0; border-radius:16px; padding:20px; display:flex; justify-content:center; align-items:center; height:380px">
+              <img id="main-img" src="${p.thumbnail}" style="max-height:320px; max-width:100%; object-fit:contain" />
+            </div>
+            
+            <div style="display:flex; gap:10px; margin-top:15px; overflow-x:auto">
+              ${(p.photos || []).slice(0, 5).map(img => `
+                <img src="${img}" onclick="document.getElementById('main-img').src='${img}'" style="width:60px; height:60px; object-fit:contain; border-radius:8px; border:1px solid #cbd5e1; cursor:pointer; background:#fff" />
+              `).join('')}
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; justify-content:center">
+            <span style="text-transform:uppercase; font-size:12px; font-weight:700; color:#2563eb">${p.category}</span>
+            <h1 style="font-size:26px; font-weight:800; margin:10px 0; color:#0f172a">${p.title}</h1>
+            <p style="color:#64748b; margin-bottom:15px">⭐ ${p.rating} / 5.0 Rating</p>
+
+            <div style="display:flex; align-items:baseline; gap:10px; margin-bottom:20px">
+              <h2 style="font-size:32px; font-weight:800; color:#0f172a">${p.priceINR}</h2>
+              ${p.discount ? `<span style="background:#ef4444; color:white; padding:2px 8px; border-radius:6px; font-size:12px; font-weight:700">-${p.discount}% OFF</span>` : ''}
+            </div>
+
+            <p style="color:#475569; line-height:1.6; margin-bottom:24px">${p.description}</p>
+
+            <div style="display:flex; gap:15px">
+              <button class="btn-primary" style="flex:1" onclick="addToCart({id:'${p.id}', title:'${p.title.replace(/'/g, "")}', price: ${p.rawPrice}, thumbnail:'${p.thumbnail}'})">🛒 Add to Cart</button>
+              <button style="padding:14px 20px; border:1px solid #cbd5e1; border-radius:10px; background:#fff; font-weight:700" onclick="toggleWishlist({id:'${p.id}', title:'${p.title.replace(/'/g, "")}', price: ${p.rawPrice}, thumbnail:'${p.thumbnail}'})">♥ Wishlist</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderError() {
+      document.getElementById('detail-container').innerHTML = '<h2>Failed to load product details. <a href="products.html">Back to Products</a></h2>';
+    }
+  </script>
+</body>
+</html>
