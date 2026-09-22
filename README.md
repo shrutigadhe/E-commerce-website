@@ -89,32 +89,23 @@ The application uses the following `localStorage` keys:
 
 ---
 
-## 🌐 Deployment
+## 🌐 Live Demo & Deployment
 
-Since ShopSphere is a static web application connected to GitHub (`https://github.com/shrutigadhe/E-commerce-website`), it can be deployed for free on multiple platforms:
+The application is deployed on **GitHub Pages**:
 
-### Option 1: GitHub Pages (Recommended)
+- 🔗 **Live Website**: [https://shrutigadhe.github.io/E-commerce-website/index.html](https://shrutigadhe.github.io/E-commerce-website/index.html)
+
+### How to Deploy Updates via GitHub Pages:
 1. Commit and push your changes to GitHub:
    ```bash
    git add .
-   git commit -m "Add README and updates"
+   git commit -m "Update project files"
    git push origin main
    ```
-2. Open your repository on GitHub: [shrutigadhe/E-commerce-website](https://github.com/shrutigadhe/E-commerce-website).
-3. Go to **Settings** > **Pages** (in the left sidebar).
-4. Under **Source**, choose **Deploy from a branch**.
-5. Under **Branch**, select `main` and `/ (root)`, then click **Save**.
-6. Your site will be published at: `https://shrutigadhe.github.io/E-commerce-website/`
-
-### Option 2: Vercel
-1. Sign in to [Vercel](https://vercel.com) using your GitHub account.
-2. Click **Add New** > **Project** and import `shrutigadhe/E-commerce-website`.
-3. Select **Other** as the Framework Preset and click **Deploy**.
-
-### Option 3: Netlify
-1. Sign in to [Netlify](https://netlify.com) with GitHub.
-2. Click **Add new site** > **Import an existing project** > **GitHub**.
-3. Select `shrutigadhe/E-commerce-website` and click **Deploy site**.
+2. In your GitHub Repository settings ([shrutigadhe/E-commerce-website](https://github.com/shrutigadhe/E-commerce-website)):
+   - Go to **Settings** > **Pages**
+   - Under **Source**, select **Deploy from a branch**
+   - Choose `main` branch and `/ (root)` directory, then click **Save**.
 
 ---
 
