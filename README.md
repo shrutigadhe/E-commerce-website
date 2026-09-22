@@ -106,9 +106,3 @@ The application is deployed on **GitHub Pages**:
    - Go to **Settings** > **Pages**
    - Under **Source**, select **Deploy from a branch**
    - Choose `main` branch and `/ (root)` directory, then click **Save**.
-
----
-
-## 📄 License
-
-This project is open-source and available under the [MIT License](LICENSE).
